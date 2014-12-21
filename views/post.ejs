@@ -1,0 +1,78 @@
+<div id="content" class="row clearfix">
+    
+</div>
+
+<div id="page" class="page clearfix">
+    
+</div>
+
+
+<script>   
+    
+    function showPost (posts) {
+        var template = document.getElementById('post_tpl').innerHTML;
+        var temp = [];
+        posts.forEach(function (post,index){
+            var templ = template;
+            for(var value in post){ 
+                if(value === 'time')
+                    post[value] = new Date(post[value]);                    
+                templ = templ.replace(RegExp('\\{\\$'+value+'\\$\\}','g'),post[value]);
+            }
+            temp.push(templ);
+        });
+        document.getElementById('content').innerHTML = temp.join('');
+    }
+
+    function showPage(nowPage,allPage){
+        var pageNum = 11; //要显示的页码数
+        var temp = [];
+        var endPage = allPage;
+        var i = nowPage <= pageNum / 2 +1 ? 1 : nowPage - (pageNum-1) / 2; //12  
+        
+        if(allPage - (pageNum-1) < i && allPage - (pageNum-1) > 0)
+            i = allPage - (pageNum-1);
+
+        if(pageNum-1 + i < allPage)
+            endPage = pageNum-1 + i; 
+
+        temp.push('<ul> <li onclick="getData(1)">首页</li> <li onclick="getData('+(nowPage - 1 < 1 ? 1 : nowPage - 1)+')">上一页</li> ');
+        while(i <= endPage){
+            if(i === nowPage)
+                temp.push('<li onclick="getData('+i+')" class="page-at">'+i+'</li> ');
+            else
+                temp.push('<li onclick="getData('+i+')">'+i+'</li> ');
+            i++;
+        }
+        temp.push('<li onclick="getData('+(nowPage+1>allPage ? allPage : nowPage+1)+')">下一页</li> <li onclick="getData('+allPage+')">尾页</li> </ul>');
+
+        $('#page').html(temp.join(''));           
+    }
+
+    function getData(page){
+        page = page > 0 ? page : 1;
+        $.getJSON('/post/<%= postUser %>/'+page,function(json) {
+            if(json.error === 0){
+                showPost(json.data);
+                showPage(page,json.page);
+            }else{
+                alert(json.msg);
+            }
+        });
+    }
+
+    
+</script>
+
+<script type="text/template" id="post_tpl">
+    <div class="span4">
+        <h4><a href="/users/u/{$user$}">{$user$}</a>说</h4>
+        <p><small>{$time$}</small></p> 
+        <p>{$post$}</p> 
+    </div>
+</script>
+
+<script>
+   getData();
+  
+</script>

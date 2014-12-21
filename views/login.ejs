@@ -1,0 +1,21 @@
+<!-- 登陆页面 -->
+<% include header %>
+
+<h3>用户登录</h3>
+<form action="/users/login" method="post">
+    <div class="group">
+        <label for="username">用户名：</label>
+        <input type="text" class="input-text" id="username" name="username">
+    </div>
+    <div class="group">
+        <label for="password">密　码：</label>
+        <input type="password" class="input-text" id="password" name="password">
+    </div>
+    <div class="group group-foot">
+        <button class="btn btn-primary">登陆</button>
+        <span><a href="/users/reg">注册</a></span>
+    </div>
+</form>
+
+
+<% include footer %>
