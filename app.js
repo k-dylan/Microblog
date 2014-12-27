@@ -31,7 +31,7 @@ app.set('view engine', 'ejs');
 
 
 //注册静态视图助手
-app.locals.host = 'http://127.0.0.1:3000/';
+app.locals.host = '/';  //网址
 app.locals.util = util;
 
 // uncomment after placing your favicon in /public
