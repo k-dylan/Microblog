@@ -25,15 +25,11 @@ Post.prototype.save = function save (callback){
         time : this.time
     };
 
-    mongodb.open(function (err,db) {
-        if(err){
-            return callback(err);
-        }
+    mongodb(function (db) {
 
         // 读取posts 集合
         db.collection('posts', function (err,collection){
             if(err){
-                mongodb.close();
                 return callback(err);
             }
 
@@ -44,7 +40,6 @@ Post.prototype.save = function save (callback){
                 }
                 // 写入 post 文档
                 collection.insert(post, {safe:true}, function (err,post){
-                    mongodb.close();
                     callback(err,post);
                 });
             });
@@ -57,14 +52,13 @@ Post.prototype.save = function save (callback){
  * 默认每页显示12条    
  */
 Post.get = function (username,page,callback) {
-    mongodb.open(function (err,db) {
+    mongodb(function (db) {
         if(err){            
             return callback(err);
         }
         // 读取posts集合
         db.collection('posts', function (err,collection) {
             if(err){
-                mongodb.close();
                 return callback(err);
             }
             // 查找user属性为username的文档，如果username是null则匹配全部
@@ -82,7 +76,6 @@ Post.get = function (username,page,callback) {
                 }
                 number = Math.ceil(num / 12);
                 find.sort({time:-1}).skip((page-1)*12).limit(12).toArray(function(err,docs) {
-                    mongodb.close();
                     if(err){
                         callback(err);
                     }
