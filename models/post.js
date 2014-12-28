@@ -52,10 +52,7 @@ Post.prototype.save = function save (callback){
  * 默认每页显示12条    
  */
 Post.get = function (username,page,callback) {
-    mongodb(function (db) {
-        if(err){            
-            return callback(err);
-        }
+    mongodb(function (db) {        
         // 读取posts集合
         db.collection('posts', function (err,collection) {
             if(err){
