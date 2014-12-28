@@ -119,11 +119,12 @@ app.use(function(err, req, res, next) {
         error: {}
     });
 });
-
+ 
 
 
 module.exports = app;
 
+// 如果不是从别的文件引用则启动
 if (!module.parent) { 
     app.set('port', process.env.PORT || 3000);
     var server = app.listen(app.get('port'), function() {
