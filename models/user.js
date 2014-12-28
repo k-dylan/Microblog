@@ -53,10 +53,6 @@ User.prototype.save = function save (callback) {
  */
 User.get = function (username, callback) {
     mongodb(function ( db) {       
-        if(err) {
-            return callback(err);
-        }
-
         //读取users集合
         db.collection('users', function (err,collection) {
             if(err){
